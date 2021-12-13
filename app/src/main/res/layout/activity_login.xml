@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="30dp"
+    android:background="@color/white"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_with_text"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Se connecter"
+        android:textSize="40dp"
+        android:textColor="@color/bleu"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border_bottom"
+        android:hint="Adresse e-mail"
+        android:layout_marginTop="35dp"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/vert"
+        android:textColor="@color/bleu"
+        android:id="@+id/email"
+        android:padding="10dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border_bottom"
+        android:hint="Mot de passe"
+        android:layout_marginTop="15dp"
+        android:id="@+id/password"
+        android:textColorHint="@color/vert"
+        android:inputType="textPassword"
+        android:textColor="@color/bleu"
+        android:padding="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:text="Se connecter"
+        android:textColor="@color/white"
+        android:background="@drawable/button_arrondi"
+        android:layout_marginTop="35dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="Vous n'avez pas de compte ? Inscrivez-vous !"
+        android:id="@+id/txt_register"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>

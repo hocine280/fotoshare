@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "924580234452",
+    "firebase_url": "https://fotoshare-d92c2-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fotoshare-d92c2",
+    "storage_bucket": "fotoshare-d92c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924580234452:android:1663a5413bc48fe7b06741",
+        "android_client_info": {
+          "package_name": "com.hocine.fotoshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924580234452-5h7dq1t1bjns37sp88dpcp1iicbvjqnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPWRGohgvQyK65cXKqivUKrrAcqwWYUjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924580234452-5h7dq1t1bjns37sp88dpcp1iicbvjqnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

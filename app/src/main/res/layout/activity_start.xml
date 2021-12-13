@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="15dp"
+    android:orientation="vertical"
+    tools:context=".StartActivity"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_with_text"
+        android:layout_marginTop="150dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="Partagez vos plus beaux moments sur FotoShare !"
+        android:textSize="20dp"
+        android:textColor="@color/bleu"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Se connecter"
+        android:id="@+id/login"
+        android:layout_marginTop="250dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_arrondi"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="S'inscrire"
+        android:id="@+id/register"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_arrondi"/>
+
+</LinearLayout>
