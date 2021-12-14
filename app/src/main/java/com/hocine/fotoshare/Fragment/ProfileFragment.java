@@ -33,6 +33,7 @@ import com.hocine.fotoshare.EditProfileActivity;
 import com.hocine.fotoshare.FollowersActivity;
 import com.hocine.fotoshare.Model.Post;
 import com.hocine.fotoshare.Model.User;
+import com.hocine.fotoshare.OptionsActivity;
 import com.hocine.fotoshare.R;
 
 import java.util.ArrayList;
@@ -128,6 +129,14 @@ public class ProfileFragment extends Fragment {
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").child(profileid).removeValue();
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid).child("followers").child(firebaseUser.getUid()).removeValue();
                 }
+            }
+        });
+
+        options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), OptionsActivity.class);
+                startActivity(intent);
             }
         });
 
