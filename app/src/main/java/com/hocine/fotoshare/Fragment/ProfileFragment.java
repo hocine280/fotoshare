@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.Adapter.MyFotoAdapter;
 import com.hocine.fotoshare.EditProfileActivity;
+import com.hocine.fotoshare.FollowersActivity;
 import com.hocine.fotoshare.Model.Post;
 import com.hocine.fotoshare.Model.User;
 import com.hocine.fotoshare.R;
@@ -143,6 +144,26 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 recyclerView.setVisibility(View.GONE);
                 recyclerView_saves.setVisibility(View.VISIBLE);
+            }
+        });
+
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowersActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "Abonné(e)");
+                startActivity(intent);
+            }
+        });
+
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowersActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "Abonnements");
+                startActivity(intent);
             }
         });
 

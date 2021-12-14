@@ -1,6 +1,7 @@
 package com.hocine.fotoshare.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.Fragment.ProfileFragment;
+import com.hocine.fotoshare.MainActivity;
 import com.hocine.fotoshare.Model.User;
 import com.hocine.fotoshare.R;
 
@@ -33,12 +35,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context mContext;
     private List<User> mUsers;
+    private boolean isfragment;
 
     private FirebaseUser firebaseUser;
 
-    public UserAdapter(Context mContext, List<User> mUsers) {
+    public UserAdapter(Context mContext, List<User> mUsers, boolean isfragment) {
         this.mContext = mContext;
         this.mUsers = mUsers;
+        this.isfragment = isfragment;
     }
 
     @NonNull
@@ -67,11 +71,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
-                editor.putString("profileid", user.getId());
-                editor.apply();
+                if(isfragment) {
+                    SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
+                    editor.putString("profileid", user.getId());
+                    editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                    ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                }else{
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    intent.putExtra("publisherid", user.getId());
+                    mContext.startActivity(intent);
+                }
             }
         });
 

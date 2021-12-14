@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.CommentsActivity;
+import com.hocine.fotoshare.FollowersActivity;
 import com.hocine.fotoshare.Fragment.PostDetailFragment;
 import com.hocine.fotoshare.Fragment.ProfileFragment;
 import com.hocine.fotoshare.Model.Post;
@@ -155,6 +156,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 Intent intent = new Intent(mContext, CommentsActivity.class);
                 intent.putExtra("postid", post.getPostid());
                 intent.putExtra("publisherid", post.getPublisher());
+                mContext.startActivity(intent);
+            }
+        });
+
+        viewHolder.likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, FollowersActivity.class);
+                intent.putExtra("id", post.getPostid());
+                intent.putExtra("title", "J'aime");
                 mContext.startActivity(intent);
             }
         });
