@@ -4,16 +4,21 @@ import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -23,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,9 +41,13 @@ import com.hocine.fotoshare.CommentsActivity;
 import com.hocine.fotoshare.FollowersActivity;
 import com.hocine.fotoshare.Fragment.PostDetailFragment;
 import com.hocine.fotoshare.Fragment.ProfileFragment;
+import com.hocine.fotoshare.MainActivity;
 import com.hocine.fotoshare.Model.Post;
 import com.hocine.fotoshare.Model.User;
+import com.hocine.fotoshare.PostActivity;
 import com.hocine.fotoshare.R;
+import com.hocine.fotoshare.RegisterActivity;
+import com.hocine.fotoshare.StartActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -181,6 +192,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 mContext.startActivity(intent);
             }
         });
+
+        viewHolder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(mContext, view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.edit:
+                                Log.d("kaka", "je vais appeler editPost");
+
+                                editPost(post.getPostid());
+                                return true;
+                            case R.id.delete:
+                                final String id = post.getPostid();
+
+                                FirebaseDatabase.getInstance().getReference("Posts").child(post.getPostid()).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                deleteNotifications(id, firebaseUser.getUid());
+                                            }
+                                        }
+                                    });
+                                return true; 
+                            case R.id.report:
+                                Toast.makeText(mContext, "Rapport cliqué", Toast.LENGTH_SHORT).show();
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //Permet de ne pas afficher les bouton modifier et supprimer quand le post n'appartient pas l'user
+                popupMenu.inflate(R.menu.post_menu);
+                if(!post.getPublisher().equals(firebaseUser.getUid())){
+                    popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
+                    popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+                }
+                popupMenu.show();
+            }
+        });
     }
 
     @Override
@@ -227,6 +282,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void deleteNotifications(final String postid, String userid){
+        Log.d("kaka", "deleteNotification appelé");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if (snapshot.child("postid").getValue().equals(postid)){
+                        snapshot.getRef().removeValue()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(mContext, "Supprimé!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -335,7 +416,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         });
     }
 
-    /*private void editPost(String postid){
+    private void editPost(String postid){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle("Modifier le post");
 
@@ -345,6 +426,44 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
         editText.setLayoutParams(lp);
+        alertDialog.setView(editText);
 
-    }*/
+        getText(postid, editText);
+
+        alertDialog.setPositiveButton("Edit",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("description", editText.getText().toString());
+
+                        FirebaseDatabase.getInstance().getReference("Posts").child(postid).updateChildren(hashMap);
+                    }
+                });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    private void getText(String postid, EditText editText){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                editText.setText(dataSnapshot.getValue(Post.class).getDescription());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

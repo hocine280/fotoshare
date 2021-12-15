@@ -8,6 +8,6 @@
         android:title="Supprimer"/>
 
     <item android:id="@+id/report"
-        android:title="Raport"/>
+        android:title="Rapport"/>
 
 </menu>

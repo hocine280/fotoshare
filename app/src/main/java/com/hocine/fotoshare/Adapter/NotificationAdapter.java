@@ -46,7 +46,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Notification notification = mNotification.get(i);
+        final Notification notification = mNotification.get(i);
         viewHolder.text.setText(notification.getText());
         getUserInfo(viewHolder.image_profile, viewHolder.prenom, notification.getUserid());
         if(notification.isIspost()){
@@ -95,7 +95,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private void getUserInfo(final ImageView imageView, final TextView prenom, String publisherid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(publisherid);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -112,7 +112,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private void getPostImage(ImageView imageView, String postid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Post post = dataSnapshot.getValue(Post.class);

@@ -80,8 +80,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 if(savedInstanceState != null){
                     if(savedInstanceState.get("prenom") != null){
-                        Log.d("kaka", "Et moi ?");
+                        nom.setText(savedInstanceState.getString("nom"));
                         prenom.setText(savedInstanceState.getString("prenom"));
+                        bio.setText(savedInstanceState.getString("bio"));
                     }
                 }
             }
@@ -125,7 +126,9 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("nom", nom.getText().toString());
         outState.putString("prenom", prenom.getText().toString());
+        outState.putString("bio", bio.getText().toString());
     }
 
     @Override
@@ -133,8 +136,9 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         if(savedInstanceState != null){
-            Log.d("kaka", savedInstanceState.getString("prenom"));
+            nom.setText(savedInstanceState.getString("nom"));
             prenom.setText(savedInstanceState.getString("prenom"));
+            bio.setText(savedInstanceState.getString("bio"));
         }
     }
 

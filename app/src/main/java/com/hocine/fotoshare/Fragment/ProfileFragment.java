@@ -189,6 +189,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addNotifications(){
+        Log.d("kaka", "je suis ici");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
