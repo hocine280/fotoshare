@@ -71,7 +71,7 @@ public class FollowersActivity extends AppCompatActivity {
             case "Abonné(e)" :
                 getFollowers();
                 break;
-            case "views" :
+            case "Personne(s) ayant vu votre story" :
                 getViews();
                 break;
         }

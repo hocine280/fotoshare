@@ -76,7 +76,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:id="@+id/r_seen"
-        android:background="#20000000"
+        android:background="@color/black"
         android:padding="3dp"
         android:layout_margin="10dp">
 
@@ -108,6 +108,6 @@
         android:layout_margin="10dp"
         android:padding="3dp"
         android:id="@+id/story_delete"
-        android:background="#20000000"/>
+        android:background="@color/black"/>
 
 </RelativeLayout>

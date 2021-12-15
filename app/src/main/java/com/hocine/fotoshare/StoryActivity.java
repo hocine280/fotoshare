@@ -98,7 +98,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         View reverse = findViewById(R.id.reverse);
         reverse.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 storiesProgressView.reverse();
             }
         });
@@ -119,7 +119,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 Intent intent = new Intent(StoryActivity.this, FollowersActivity.class);
                 intent.putExtra("id", userid);
                 intent.putExtra("storyid", storyids.get(counter));
-                intent.putExtra("title", "views");
+                intent.putExtra("title", "Personne(s) ayant vu votre story");
                 startActivity(intent);
             }
         });

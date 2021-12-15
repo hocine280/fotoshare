@@ -51,7 +51,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
     private void publishStory(){
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("En cours de publication");
+        progressDialog.setMessage("En cours de publication ...");
         progressDialog.show();
 
         if(mImageUri != null){
