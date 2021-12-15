@@ -1,8 +1,14 @@
 package com.hocine.fotoshare.Adapter;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hocine.fotoshare.CommentsActivity;
 import com.hocine.fotoshare.Fragment.ProfileFragment;
 import com.hocine.fotoshare.MainActivity;
 import com.hocine.fotoshare.Model.User;
@@ -92,11 +101,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").child(user.getId()).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("followers").child(firebaseUser.getUid()).setValue(true);
                     addNotifications(user.getId());
+                    // Déclenchement d'une notification
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        NotificationChannel channel = new NotificationChannel("Ma notification", "Ma notification", NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager manager = getSystemService(mContext, NotificationManager.class);
+                        manager.createNotificationChannel(channel);
+                    }
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
+                    builder.setContentTitle("FotoShare - Notifications");
+                    builder.setContentText( "Vous venez de suivre une personne sur FotoShare ");
+                    builder.setSmallIcon(R.drawable.logo);
+                    builder.setAutoCancel(true);
+
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(mContext);
+                    managerCompat.notify(1, builder.build());
                 }else{
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
                             child("following").child(user.getId()).removeValue();
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
                             child("followers").child(firebaseUser.getUid()).removeValue();
+                    // Déclenchement d'une notification
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        NotificationChannel channel = new NotificationChannel("Ma notification", "Ma notification", NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager manager = getSystemService(mContext, NotificationManager.class);
+                        manager.createNotificationChannel(channel);
+                    }
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
+                    builder.setContentTitle("FotoShare - Notifications");
+                    builder.setContentText( "Vous venez de vous désabonner d'une personne ");
+                    builder.setSmallIcon(R.drawable.logo);
+                    builder.setAutoCancel(true);
+
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(mContext);
+                    managerCompat.notify(1, builder.build());
                 }
             }
         });
@@ -112,6 +149,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         reference.push().setValue(hashMap);
     }
+
 
     @Override
     public int getItemCount() {

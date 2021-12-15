@@ -3,10 +3,15 @@ package com.hocine.fotoshare;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -107,6 +112,7 @@ public class CommentsActivity extends AppCompatActivity {
         hashMap.put("publisher", firebaseUser.getUid());
 
         reference.push().setValue(hashMap);
+
         addNotifications();
         addcomment.setText("");
     }
@@ -120,7 +126,25 @@ public class CommentsActivity extends AppCompatActivity {
         hashMap.put("ispost", true);
 
         reference.push().setValue(hashMap);
+        Log.d("idUserKaka", firebaseUser.getUid());
+
+        // Déclenchement d'une notification
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("Ma notification", "Ma notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(CommentsActivity.this, "Ma notification");
+        builder.setContentTitle("FotoShare - Notifications");
+        builder.setContentText( "Vous venez de commenter un post ");
+        builder.setSmallIcon(R.drawable.logo);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(CommentsActivity.this);
+        managerCompat.notify(1, builder.build());
+
     }
+
 
     private void getImage(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
