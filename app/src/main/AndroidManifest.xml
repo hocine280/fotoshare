@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FotoShare">
         <activity
+            android:name=".StoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddStoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".OptionsActivity"
             android:exported="true" />
         <activity
