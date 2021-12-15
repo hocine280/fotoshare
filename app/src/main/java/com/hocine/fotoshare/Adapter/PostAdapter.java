@@ -1,15 +1,23 @@
 package com.hocine.fotoshare.Adapter;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
@@ -181,7 +190,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView image_profile, post_image, like, comment, save;
+        public ImageView image_profile, post_image, like, comment, save, more;
         public TextView prenom, likes, publisher, description, comments;
 
         public ViewHolder(@NonNull View itemView){
@@ -197,6 +206,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             description = itemView.findViewById(R.id.description);
             prenom = itemView.findViewById(R.id.prenom);
             save = itemView.findViewById(R.id.save);
+            more = itemView.findViewById(R.id.more);
 
         }
     }
@@ -253,6 +263,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         hashMap.put("ispost", true);
 
         reference.push().setValue(hashMap);
+
+        // Déclenchement d'une notification
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("Ma notification", "Ma notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(mContext, NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
+        builder.setContentTitle("FotoShare - Notifications");
+        builder.setContentText( "Vous venez d'aimé un post ");
+        builder.setSmallIcon(R.drawable.logo);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(mContext);
+        managerCompat.notify(1, builder.build());
     }
 
     private void nrLikes(final TextView likes, String postid){
@@ -309,4 +334,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
+
+    /*private void editPost(String postid){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setTitle("Modifier le post");
+
+        EditText editText = new EditText(mContext);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        editText.setLayoutParams(lp);
+
+    }*/
 }

@@ -9,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -48,6 +49,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     StorageReference storageRef;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +71,19 @@ public class EditProfileActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("kaka", "Je suis appelé !!");
                 User user = dataSnapshot.getValue(User.class);
                 nom.setText(user.getNom());
                 prenom.setText(user.getPrenom());
                 bio.setText(user.getBio());
                 Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
+
+                if(savedInstanceState != null){
+                    if(savedInstanceState.get("prenom") != null){
+                        Log.d("kaka", "Et moi ?");
+                        prenom.setText(savedInstanceState.getString("prenom"));
+                    }
+                }
             }
 
             @Override
@@ -106,8 +117,25 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateProfile(nom.getText().toString(), prenom.getText().toString(), bio.getText().toString());
+                Toast.makeText(EditProfileActivity.this, "Vos modifications ont été enregistrées avec succès", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("prenom", prenom.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState != null){
+            Log.d("kaka", savedInstanceState.getString("prenom"));
+            prenom.setText(savedInstanceState.getString("prenom"));
+        }
     }
 
     private void updateProfile(String nom, String prenom, String bio) {

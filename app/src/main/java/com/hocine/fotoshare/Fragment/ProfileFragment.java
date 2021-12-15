@@ -1,11 +1,18 @@
 package com.hocine.fotoshare.Fragment;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.Adapter.MyFotoAdapter;
+import com.hocine.fotoshare.CommentsActivity;
 import com.hocine.fotoshare.EditProfileActivity;
 import com.hocine.fotoshare.FollowersActivity;
 import com.hocine.fotoshare.Model.Post;
@@ -48,6 +56,7 @@ public class ProfileFragment extends Fragment {
     Button edit_profile;
 
     private List<String> mySaves;
+
 
     RecyclerView recyclerView_saves;
     MyFotoAdapter myFotoAdapter_saves;
@@ -186,8 +195,6 @@ public class ProfileFragment extends Fragment {
         hashMap.put("text", "a commencé à vous suivre");
         hashMap.put("postid", "");
         hashMap.put("ispost", false);
-
-        reference.push().setValue(hashMap);
     }
 
     private void userInfo(){
