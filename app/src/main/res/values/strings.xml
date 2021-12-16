@@ -26,4 +26,18 @@
     <string name="follow_notif">Vous venez de suivre une personne sur FotoShare</string>
     <string name="unfollow_notif">"Vous venez de vous désabonnez d\'une personne"</string>
     <string name="follow_notif_fragment">a commencé à vous suivre</string>
+    <string name="edit_profile">Modifier mon profil</string>
+    <string name="publication_dialog">En cours de publication</string>
+    <string name="error">Une erreur est survenu</string>
+    <string name="image">"Aucune image n\'a été sélectionnée"</string>
+    <string name="notif_pub">Un petit tour sur FotoShare ?</string>
+    <string name="comments_empty">Vous ne pouvez pas publier un commentaire vide</string>
+    <string name="comment_published">Commentaire publié !</string>
+    <string name="notif_comments_fragment">Votre post a reçu ce commentaire : </string>
+    <string name="notif_comments">Vous venez de commenter un post</string>
+    <string name="edit_profile_success">Vos modifications ont été enregistrées avec succès</string>
+    <string name="save_in_progress">Enregistement en cours ...</string>
+    <string name="error_registration">Erreur lors de la modification</string>
+    <string name="like">"J\'aime"</string>
+    <string name="subscriptions">Abonnements</string>
 </resources>

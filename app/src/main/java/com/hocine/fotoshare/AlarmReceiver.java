@@ -1,6 +1,8 @@
 package com.hocine.fotoshare;
 
 
+import static android.provider.Settings.System.getString;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -16,9 +18,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("kaka", "Heho je suis la");
         NotificationHelper notificationHelper = new NotificationHelper(context.getApplicationContext());
-        notificationHelper.notify(1, "FotoShare - Notifications", "Venez voir les derniers posts de tes amis" );
+        notificationHelper.notify(1, "FotoShare - Notifications", context.getString(R.string.notif_pub));
     }
 }
 

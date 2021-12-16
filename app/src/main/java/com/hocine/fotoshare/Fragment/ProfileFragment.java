@@ -57,7 +57,6 @@ public class ProfileFragment extends Fragment {
 
     private List<String> mySaves;
 
-
     RecyclerView recyclerView_saves;
     MyFotoAdapter myFotoAdapter_saves;
     List<Post> postList_saves;
@@ -117,7 +116,7 @@ public class ProfileFragment extends Fragment {
         mySaves();
 
         if(profileid.equals(firebaseUser.getUid())){
-            edit_profile.setText("Modifier mon profil");
+            edit_profile.setText(getString(R.string.edit_profile));
         }else{
             checkFollow();
             saved_fotos.setVisibility(View.GONE);
@@ -128,13 +127,13 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 String btn = edit_profile.getText().toString();
 
-                if(btn.equals("Modifier mon profil")){
+                if(btn.equals(getString(R.string.edit_profile))){
                     startActivity(new Intent(getContext(), EditProfileActivity.class));
-                }else if(btn.equals("Suivre")){
+                }else if(btn.equals(getString(R.string.follow))){
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").child(profileid).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid).child("followers").child(firebaseUser.getUid()).setValue(true);
                     addNotifications();
-                }else if(btn.equals("Abonné(e)")){
+                }else if(btn.equals(getString(R.string.subscriber))){
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").child(profileid).removeValue();
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid).child("followers").child(firebaseUser.getUid()).removeValue();
                 }
@@ -189,11 +188,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addNotifications(){
-        Log.d("kaka", "je suis ici");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
-        hashMap.put("text", "a commencé à vous suivre");
+        hashMap.put("text", getString(R.string.follow_notif_fragment));
         hashMap.put("postid", "");
         hashMap.put("ispost", false);
     }
@@ -226,9 +224,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child(profileid).exists()){
-                    edit_profile.setText("Abonné(e)");
+                    edit_profile.setText(getString(R.string.subscriber));
                 }else{
-                    edit_profile.setText("Suivre");
+                    edit_profile.setText(getString(R.string.follow));
                 }
             }
 

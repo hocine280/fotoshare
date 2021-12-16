@@ -26,4 +26,18 @@
     <string name="follow_notif">You have just followed someone on FotoShare</string>
     <string name="unfollow_notif">You have just unsubscribed from a person</string>
     <string name="follow_notif_fragment">started following you</string>
+    <string name="edit_profile">Edit my profile</string>
+    <string name="publication_dialog">Currently being published</string>
+    <string name="error">An error has occurred</string>
+    <string name="image">No images have been selected</string>
+    <string name="notif_pub">A little tour on FotoShare?</string>
+    <string name="comments_empty">You cannot post an empty comment</string>
+    <string name="comment_published">Comment published!</string>
+    <string name="notif_comments_fragment">"Your post received this comment "</string>
+    <string name="notif_comments">You have just commented on a post</string>
+    <string name="edit_profile_success">Your changes have been successfully saved</string>
+    <string name="save_in_progress">Registration in progress ...</string>
+    <string name="error_registration">Error when editing</string>
+    <string name="like">Like</string>
+    <string name="subscriptions">Subscriptions</string>
 </resources>

@@ -71,7 +71,6 @@ public class EditProfileActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("kaka", "Je suis appelé !!");
                 User user = dataSnapshot.getValue(User.class);
                 nom.setText(user.getNom());
                 prenom.setText(user.getPrenom());
@@ -118,7 +117,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateProfile(nom.getText().toString(), prenom.getText().toString(), bio.getText().toString());
-                Toast.makeText(EditProfileActivity.this, "Vos modifications ont été enregistrées avec succès", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, getString(R.string.edit_profile_success), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,7 +160,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void uploadImage(){
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Enregistement en cours ...");
+        progressDialog.setMessage(getString(R.string.save_in_progress));
         progressDialog.show();
 
         if(mImageUri != null){
@@ -188,7 +187,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         reference.updateChildren(hashMap);
                         progressDialog.dismiss();
                     }else{
-                        Toast.makeText(EditProfileActivity.this, "Erreur lors de la modification", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, getString(R.string.error_registration), Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -198,7 +197,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             });
         }else{
-            Toast.makeText(this, "Aucune image n'a été sélectionnée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.image), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,7 +210,7 @@ public class EditProfileActivity extends AppCompatActivity {
             mImageUri = result.getUri();
             uploadImage();
         }else{
-            Toast.makeText(this, "Une erreur est survenu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
         }
     }
 }

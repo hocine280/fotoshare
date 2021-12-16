@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
         calendar.set(Calendar.MINUTE, 00);
         calendar.set(Calendar.SECOND, 0);
 

@@ -51,7 +51,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
     private void publishStory(){
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("En cours de publication ...");
+        progressDialog.setMessage(getString(R.string.publication_dialog));
         progressDialog.show();
 
         if(mImageUri != null){
@@ -89,7 +89,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
                         finish(); 
                     }else{
-                        Toast.makeText(AddStoryActivity.this, "Une erreur est survenu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddStoryActivity.this, getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -99,7 +99,7 @@ public class AddStoryActivity extends AppCompatActivity {
                 }
             }); 
         }else{
-            Toast.makeText(this, "Aucune image n'a été sélectionnée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.image), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -112,7 +112,7 @@ public class AddStoryActivity extends AppCompatActivity {
             
             publishStory();
         }else{
-            Toast.makeText(this, "Une erreur est survenu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(AddStoryActivity.this, MainActivity.class));
             finish();
         }

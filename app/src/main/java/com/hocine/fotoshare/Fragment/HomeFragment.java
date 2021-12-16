@@ -75,12 +75,11 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progress_circular);
 
 
-
         checkFollowing();
         return view;
     }
 
-    private void checkFollowing(){
+    private void checkFollowing() {
         followingList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
@@ -88,7 +87,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followingList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     followingList.add(snapshot.getKey());
                 }
                 readPosts();
@@ -102,22 +101,22 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void readPosts(){
+    private void readPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postLists.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
                     Log.d("tag", String.valueOf(post));
-                    for(String id : followingList){
+                    for (String id : followingList) {
                         Log.d("tag", "id : " + id);
                         Log.d("tag", "publisher : " + post.getPublisher());
-                         if(post.getPublisher().equals(id)){
-                           postLists.add(post);
-                         }
+                        if (post.getPublisher().equals(id)) {
+                            postLists.add(post);
+                        }
                     }
                 }
                 postAdapter.notifyDataSetChanged();
@@ -131,24 +130,24 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void readStory(){
+    private void readStory() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long timecurrent = System.currentTimeMillis();
                 storyList.clear();
-                storyList.add(new Story("", 0,0,"",
+                storyList.add(new Story("", 0, 0, "",
                         FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                for(String id : followingList){
+                for (String id : followingList) {
                     int countStory = 0;
                     Story story = null;
-                    for(DataSnapshot snapshot : dataSnapshot.child(id).getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.child(id).getChildren()) {
                         story = snapshot.getValue(Story.class);
-                        if(timecurrent > story.getTimestart() && timecurrent < story.getTimeend()){
+                        if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()) {
                             countStory++;
                         }
-                        if(countStory > 0){
+                        if (countStory > 0) {
                             storyList.add(story);
                         }
                     }

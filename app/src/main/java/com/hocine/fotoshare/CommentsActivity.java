@@ -60,7 +60,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Commentaires");
+        getSupportActionBar().setTitle(getString(R.string.comments));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //toolbar.setNavigationOnClickListener(new View.OnClickListener() {
           //  @Override
@@ -93,17 +93,15 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(addcomment.getText().toString().equals("")){
-                    Toast.makeText(CommentsActivity.this, "Vous ne pouvez pas publier un commentaire vide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentsActivity.this, getString(R.string.comments_empty), Toast.LENGTH_SHORT).show();
                 }else{
                     addComment();
-                    Toast.makeText(CommentsActivity.this, "Commentaire publié", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentsActivity.this, getString(R.string.comment_published), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         getImage();
-        Log.d("commentaire", "Avant appel fonction readComments");
         readComments();
-        Log.d("commentaire", "Après appel fonction readComments");
     }
 
     private void addComment(){
@@ -126,7 +124,7 @@ public class CommentsActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(publisherid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
-        hashMap.put("text", "Votre post a reçu ce commentaire : "+addcomment.getText().toString());
+        hashMap.put("text", getString(R.string.notif_comments_fragment)+" : "+addcomment.getText().toString());
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
 
@@ -141,7 +139,7 @@ public class CommentsActivity extends AppCompatActivity {
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(CommentsActivity.this, "Ma notification");
         builder.setContentTitle("FotoShare - Notifications");
-        builder.setContentText( "Vous venez de commenter un post ");
+        builder.setContentText(getString(R.string.notif_comments));
         builder.setSmallIcon(R.drawable.logo);
         builder.setAutoCancel(true);
 
