@@ -33,8 +33,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Publier"
-                        android:id="@+id/publisher"
+                        android:text="@string/publish"
+                        android:id="@+id/post"
                         android:textSize="16sp"
                         android:layout_marginEnd="10dp"
                         android:layout_centerVertical="true"

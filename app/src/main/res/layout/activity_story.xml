@@ -22,13 +22,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/skip" />
+            android:id="@+id/reverse" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/reverse"
+            android:id="@+id/skip"
             />
 
     </LinearLayout>

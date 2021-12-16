@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,7 +43,6 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     LinearLayout r_seen;
     TextView seen_number;
     ImageView story_delete;
-
 
 
     List<String> images;
@@ -99,13 +99,14 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         reverse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("avant", "avant");
                 storiesProgressView.reverse();
             }
         });
         reverse.setOnTouchListener(onTouchListener);
 
         View skip = findViewById(R.id.skip);
-        reverse.setOnClickListener(new View.OnClickListener() {
+        skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 storiesProgressView.skip();
