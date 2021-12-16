@@ -1,5 +1,8 @@
 package com.hocine.fotoshare.Fragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,11 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.Adapter.PostAdapter;
 import com.hocine.fotoshare.Adapter.StoryAdapter;
+import com.hocine.fotoshare.AlarmReceiver;
+import com.hocine.fotoshare.MainActivity;
 import com.hocine.fotoshare.Model.Post;
 import com.hocine.fotoshare.Model.Story;
 import com.hocine.fotoshare.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -40,7 +46,6 @@ public class HomeFragment extends Fragment {
 
     private List<String> followingList;
     ProgressBar progressBar;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +73,8 @@ public class HomeFragment extends Fragment {
 
 
         progressBar = view.findViewById(R.id.progress_circular);
+
+
 
         checkFollowing();
         return view;
