@@ -54,14 +54,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-                pd.setMessage("Veuillez patienter ...");
+                pd.setMessage(getString(R.string.wait));
 
 
                 String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
 
                 if(TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
-                    Toast.makeText(LoginActivity.this, "Tous les champs doivent être remplis !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.filled_field), Toast.LENGTH_SHORT).show();
                 }else {
                     pd.show();
                     auth.signInWithEmailAndPassword(str_email, str_password)
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                                         });
                                     }else{
                                         pd.dismiss();
-                                        Toast.makeText(LoginActivity.this, "Connexion échouée", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

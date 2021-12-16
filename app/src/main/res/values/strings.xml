@@ -28,7 +28,7 @@
     <string name="follow_notif_fragment">a commencé à vous suivre</string>
     <string name="edit_profile">Modifier mon profil</string>
     <string name="publication_dialog">En cours de publication</string>
-    <string name="error">Une erreur est survenu</string>
+    <string name="error">Une erreur est survenue</string>
     <string name="image">"Aucune image n\'a été sélectionnée"</string>
     <string name="notif_pub">Un petit tour sur FotoShare ?</string>
     <string name="comments_empty">Vous ne pouvez pas publier un commentaire vide</string>
@@ -41,4 +41,13 @@
     <string name="like">"J\'aime"</string>
     <string name="subscriptions">Abonnements</string>
     <string name="person_see_story">Personne(s) ayant vu votre story</string>
+    <string name="wait">Veuillez patienter ...</string>
+    <string name="filled_field">Tous les champs doivent être remplis !</string>
+    <string name="connection_failed">Connexion echouée</string>
+    <string name="post_published">Post en cours de publication</string>
+    <string name="post_created">Post crée avec succès !</string>
+    <string name="post_failed">La publication de votre post a échouée, veuillez réessayer</string>
+    <string name="password">Le mot de passe doit contenir au minimum 6 caractères !</string>
+    <string name="register_failed">Vous ne pouvez pas vous inscrire avec cette adresse e-mail ou ce mot de passe</string>
+    <string name="story_delete">Story supprimée</string>
 </resources>

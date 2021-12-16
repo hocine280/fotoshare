@@ -77,7 +77,7 @@ public class PostActivity extends AppCompatActivity {
 
     private void uploadImage(){
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Post en cours de publication");
+        progressDialog.setMessage(getString(R.string.post_published));
         progressDialog.show();
         if(imageUri != null){
             final StorageReference filereference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -107,9 +107,9 @@ public class PostActivity extends AppCompatActivity {
                        progressDialog.dismiss();
                        startActivity(new Intent(PostActivity.this, MainActivity.class));
                        finish();
-                       Toast.makeText(PostActivity.this, "Post crée avec succès !", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(PostActivity.this, getString(R.string.post_created), Toast.LENGTH_SHORT).show();
                    }else{
-                       Toast.makeText(PostActivity.this, "La publication de votre post a échouée, veuillez réessayer", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(PostActivity.this, getString(R.string.post_failed), Toast.LENGTH_SHORT).show();
                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -119,7 +119,7 @@ public class PostActivity extends AppCompatActivity {
                 }
             });
         }else{
-            Toast.makeText(this, "Aucune image n'a été selectionnée !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.image), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -131,7 +131,7 @@ public class PostActivity extends AppCompatActivity {
             imageUri = result.getUri();
             image_added.setImageURI(imageUri);
         }else{
-            Toast.makeText(this, "Echec de la tentative", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this,MainActivity.class));
             finish();
         }

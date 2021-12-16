@@ -62,22 +62,7 @@ public class FollowersActivity extends AppCompatActivity {
         recyclerView.setAdapter(userAdapter);
 
         idList = new ArrayList<>();
-        /*switch (title){
-            case "J'aime" :
-                getLikes();
-                break;
-            case "Abonnements":
-                getFollowing();
-                break;
-            case "Abonné(e)" :
-                getFollowers();
-                break;
-            case "Personne(s) ayant vu votre story" :
-                getViews();
-                Log.d("debug", getString(R.string.person_see_story));
-                Log.d("debug", String.valueOf(title));
-                break;
-        }*/
+
         if(title.equals(getString(R.string.like))){
             getLikes();
         }else if(title.equals(getString(R.string.subscriptions))){

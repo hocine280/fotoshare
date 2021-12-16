@@ -132,7 +132,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(StoryActivity.this, "Story supprimée !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(StoryActivity.this, getString(R.string.story_delete), Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

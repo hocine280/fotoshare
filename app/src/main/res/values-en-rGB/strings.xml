@@ -41,4 +41,13 @@
     <string name="like">Like</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="person_see_story">"Person(s) who saw your story "</string>
+    <string name="wait">Please wait ...</string>
+    <string name="filled_field">All fields must be filled in!</string>
+    <string name="connection_failed">Connection failed</string>
+    <string name="post_published">Post in process of publication</string>
+    <string name="post_created">Post created with success!</string>
+    <string name="post_failed">Your post failed to be published, please try again</string>
+    <string name="password">The password must contain at least 6 characters!</string>
+    <string name="register_failed">You cannot register with this email address or password</string>
+    <string name="story_delete">Story deleted</string>
 </resources>

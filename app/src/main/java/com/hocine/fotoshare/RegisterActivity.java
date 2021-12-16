@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pd = new ProgressDialog(RegisterActivity.this);
-                pd.setMessage("Veuillez patienter ...");
+                pd.setMessage(getString(R.string.wait));
 
 
                 String str_prenom= prenom.getText().toString();
@@ -67,9 +67,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String str_password = password.getText().toString();
 
                 if(TextUtils.isEmpty(str_prenom) || TextUtils.isEmpty(str_nom) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_prenom)){
-                    Toast.makeText(RegisterActivity.this, "Tous les champs doivent être remplis !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, getString(R.string.filled_field), Toast.LENGTH_SHORT).show();
                 }else if(str_password.length()<6){
-                    Toast.makeText(RegisterActivity.this, "Le mot de passe doit contenir au minimum 6 caractères !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, getString(R.string.password), Toast.LENGTH_SHORT).show();
                 }else{
                     pd.show();
                     register(str_prenom, str_nom, str_email, str_password);
@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
                         }else{
                             pd.dismiss();
-                            Toast.makeText(RegisterActivity.this, "Vous ne pouvez pas vous inscrire avec cette adresse e-mail ou ce mot de passe", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
