@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/comment"
-            android:text="Commentaire"
+            android:text="@string/comments"
             android:maxLines="5" />
     </LinearLayout>
 

@@ -57,4 +57,14 @@
     <string name="name">Nom</string>
     <string name="first_name">Prénom</string>
     <string name="bio">Description du profil</string>
+    <string name="login">Se connecter</string>
+    <string name="email">Adresse e-mail</string>
+    <string name="password_login">Mot de passe</string>
+    <string name="not_account">"Vous n\'avez pas de compte ? Inscrivez-vous !"</string>
+    <string name="have_account">Vous avez déjà un compte ? Connectez-vous !</string>
+    <string name="logout">Se deconnecter</string>
+    <string name="description_of_publication">Description de la publication</string>
+    <string name="register">"S\'inscrire"</string>
+    <string name="slogan">Partagez vos plus beaux moments sur FotoShare !</string>
+    <string name="search">Recherche ...</string>
 </resources>
