@@ -50,4 +50,11 @@
     <string name="password">The password must contain at least 6 characters!</string>
     <string name="register_failed">You cannot register with this email address or password</string>
     <string name="story_delete">Story deleted</string>
+    <string name="add_comment">Add a comment</string>
+    <string name="publish">Publish</string>
+    <string name="save">Save</string>
+    <string name="change_photo">Change my profile picture</string>
+    <string name="name">Name</string>
+    <string name="first_name">First name</string>
+    <string name="bio">Profile description</string>
 </resources>
