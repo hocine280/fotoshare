@@ -142,7 +142,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                 if(click){
                     if(count > 0){
                         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Voir la story", new DialogInterface.OnClickListener() {
+                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, mContext.getString(R.string.view_story), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
                                 Intent intent = new Intent(mContext, StoryActivity.class);
@@ -151,7 +151,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                                 dialogInterface.dismiss();
                             }
                         });
-                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ajouter une story", new DialogInterface.OnClickListener() {
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, mContext.getString(R.string.add_story), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
                                 Intent intent = new Intent(mContext, AddStoryActivity.class);
@@ -166,10 +166,10 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                     }
                 }else{
                     if(count>0){
-                        textView.setText("Ma story");
+                        textView.setText(mContext.getString(R.string.my_story));
                         imageView.setVisibility(View.GONE);
                     }else{
-                        textView.setText("Story");
+                        textView.setText(mContext.getString(R.string.story));
                         imageView.setVisibility(View.VISIBLE);
                     }
                 }

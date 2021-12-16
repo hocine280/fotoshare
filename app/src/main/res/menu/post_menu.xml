@@ -7,7 +7,7 @@
     <item android:id="@+id/delete"
         android:title="Supprimer"/>
 
-    <item android:id="@+id/report"
-        android:title="Rapport"/>
+    <item android:id="@+id/noAction"
+        android:title="Aucune action possible"/>
 
 </menu>

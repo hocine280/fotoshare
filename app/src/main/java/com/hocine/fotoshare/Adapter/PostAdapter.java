@@ -202,7 +202,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.edit:
-                                Log.d("kaka", "je vais appeler editPost");
 
                                 editPost(post.getPostid());
                                 return true;
@@ -219,8 +218,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                                         }
                                     });
                                 return true; 
-                            case R.id.report:
-                                Toast.makeText(mContext, "Rapport cliqué", Toast.LENGTH_SHORT).show();
+                            case R.id.noAction:
+                                Toast.makeText(mContext, mContext.getString(R.string.no_action), Toast.LENGTH_SHORT).show();
                                 return true;
                             default:
                                 return false;
@@ -232,6 +231,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 if(!post.getPublisher().equals(firebaseUser.getUid())){
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+                }else{
+                    popupMenu.getMenu().findItem(R.id.noAction).setVisible(false);
                 }
                 popupMenu.show();
             }
@@ -272,11 +273,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() == 1 ){
-                    comments.setText("Voir "+dataSnapshot.getChildrenCount()+" commentaire");
+                    comments.setText(mContext.getString(R.string.see)+" "+dataSnapshot.getChildrenCount()+" "+mContext.getString(R.string.comment));
                 }else if(dataSnapshot.getChildrenCount() == 0){
-                    comments.setText("Aucun commentaire sur cette publication");
+                    comments.setText(mContext.getString(R.string.no_comments));
                 }else if(dataSnapshot.getChildrenCount()>1){
-                    comments.setText("Voir les " + dataSnapshot.getChildrenCount() + " commentaires");
+                    comments.setText(mContext.getString(R.string.see)+" "+mContext.getString(R.string.the)+" "+ dataSnapshot.getChildrenCount() + " " +mContext.getString(R.string.comments));
                 }
             }
 
@@ -288,7 +289,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     private void deleteNotifications(final String postid, String userid){
-        Log.d("kaka", "deleteNotification appelé");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -299,7 +299,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(mContext, "Supprimé!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, mContext.getString(R.string.delete), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
@@ -339,7 +339,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
-        hashMap.put("text", "a aimé votre post");
+        hashMap.put("text", mContext.getString(R.string.liked_post));
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
 
@@ -353,7 +353,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
         builder.setContentTitle("FotoShare - Notifications");
-        builder.setContentText( "Vous venez d'aimé un post ");
+        builder.setContentText( mContext.getString(R.string.liked_post_notif));
         builder.setSmallIcon(R.drawable.logo);
         builder.setAutoCancel(true);
 
@@ -418,7 +418,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     private void editPost(String postid){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-        alertDialog.setTitle("Modifier le post");
+        alertDialog.setTitle(mContext.getString(R.string.edit_post));
 
         EditText editText = new EditText(mContext);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -430,7 +430,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         getText(postid, editText);
 
-        alertDialog.setPositiveButton("Edit",
+        alertDialog.setPositiveButton(mContext.getString(R.string.edit),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -440,7 +440,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                         FirebaseDatabase.getInstance().getReference("Posts").child(postid).updateChildren(hashMap);
                     }
                 });
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(mContext.getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {

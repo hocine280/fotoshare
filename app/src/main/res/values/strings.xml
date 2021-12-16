@@ -2,4 +2,28 @@
     <string name="app_name">FotoShare</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_comment">Souhaitez-vous vraiment supprimer votre commmentaire ?</string>
+    <string name="no">Non</string>
+    <string name="yes">Yes</string>
+    <string name="delete">Supprimé !</string>
+    <string name="no_action">Vous ne pouvez effectuer aucune action</string>
+    <string name="see">Voir</string>
+    <string name="the">les</string>
+    <string name="comment">commentaire</string>
+    <string name="comments">commentaires</string>
+    <string name="no_comments">Aucun commentaire sur cette publication</string>
+    <string name="liked_post">a aimé votre post</string>
+    <string name="liked_post_notif">"Vous venez d\'aimé un post"</string>
+    <string name="edit_post">Modifier le post</string>
+    <string name="edit">Modifier</string>
+    <string name="cancel">Annuler</string>
+    <string name="view_story">Voir la story</string>
+    <string name="add_story">Ajouter une story</string>
+    <string name="my_story">Ma story</string>
+    <string name="story">Story</string>
+    <string name="follow">Suivre</string>
+    <string name="subscriber">Abonné(e)</string>
+    <string name="follow_notif">Vous venez de suivre une personne sur FotoShare</string>
+    <string name="unfollow_notif">"Vous venez de vous désabonnez d\'une personne"</string>
+    <string name="follow_notif_fragment">a commencé à vous suivre</string>
 </resources>

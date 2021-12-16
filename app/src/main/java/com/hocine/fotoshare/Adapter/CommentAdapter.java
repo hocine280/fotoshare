@@ -89,15 +89,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public boolean onLongClick(View v) {
                 if(comment.getPublisher().equals(firebaseUser.getUid())){
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                    alertDialog.setTitle("Souhaitez-vous vraiment supprimer votre commmentaire ?");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Non",
+                    alertDialog.setTitle(mContext.getString(R.string.delete_comment));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, mContext.getString(R.string.no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int which) {
                                     dialogInterface.dismiss();
                                 }
                             });
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Oui",
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, mContext.getString(R.string.no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int which) {

@@ -97,7 +97,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         viewHolder.btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(viewHolder.btn_follow.getText().toString().equals("Suivre")){
+                if(viewHolder.btn_follow.getText().toString().equals(mContext.getString(R.string.follow))){
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").child(user.getId()).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("followers").child(firebaseUser.getUid()).setValue(true);
                     addNotifications(user.getId());
@@ -109,7 +109,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                     }
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
                     builder.setContentTitle("FotoShare - Notifications");
-                    builder.setContentText( "Vous venez de suivre une personne sur FotoShare ");
+                    builder.setContentText(mContext.getString(R.string.follow_notif));
                     builder.setSmallIcon(R.drawable.logo);
                     builder.setAutoCancel(true);
 
@@ -128,7 +128,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                     }
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "Ma notification");
                     builder.setContentTitle("FotoShare - Notifications");
-                    builder.setContentText( "Vous venez de vous désabonner d'une personne ");
+                    builder.setContentText(mContext.getString(R.string.unfollow_notif));
                     builder.setSmallIcon(R.drawable.logo);
                     builder.setAutoCancel(true);
 
@@ -143,7 +143,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
-        hashMap.put("text", "a commencé à vous suivre");
+        hashMap.put("text", mContext.getString(R.string.follow_notif_fragment));
         hashMap.put("postid", "");
         hashMap.put("ispost", false);
 
@@ -179,9 +179,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child(userid).exists()){
-                    button.setText("Abonne(é)");
+                    button.setText(mContext.getString(R.string.subscriber));
                 }else{
-                    button.setText("Suivre");
+                    button.setText(mContext.getString(R.string.follow));
                 }
             }
 

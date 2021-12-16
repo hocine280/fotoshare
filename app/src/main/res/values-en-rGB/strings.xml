@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FotoShare</string>
+    <string name="delete_comment">Do you really want to delete your comment?</string>
+    <string name="hello_blank_fragment">Hello bank fragment</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="delete">Deleted!</string>
+    <string name="no_action">You may not perform any action</string>
+    <string name="see">See</string>
+    <string name="the">the</string>
+    <string name="comment">comment</string>
+    <string name="comments">comments</string>
+    <string name="no_comments">No comments on this publication</string>
+    <string name="liked_post">liked your post</string>
+    <string name="liked_post_notif">You just loved a post</string>
+    <string name="edit_post">Edit the post</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="view_story">See the story</string>
+    <string name="add_story">Add a story</string>
+    <string name="my_story">My story</string>
+    <string name="story">Story</string>
+    <string name="follow">Follow</string>
+    <string name="subscriber">Subscriber</string>
+    <string name="follow_notif">You have just followed someone on FotoShare</string>
+    <string name="unfollow_notif">You have just unsubscribed from a person</string>
+    <string name="follow_notif_fragment">started following you</string>
 </resources>
