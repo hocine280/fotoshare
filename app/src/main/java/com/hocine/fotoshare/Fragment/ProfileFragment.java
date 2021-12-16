@@ -169,7 +169,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), FollowersActivity.class);
                 intent.putExtra("id", profileid);
-                intent.putExtra("title", "Abonné(e)");
+                intent.putExtra("title", getString(R.string.subscriber));
                 startActivity(intent);
             }
         });
@@ -179,7 +179,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), FollowersActivity.class);
                 intent.putExtra("id", profileid);
-                intent.putExtra("title", "Abonnements");
+                intent.putExtra("title", getString(R.string.subscriptions));
                 startActivity(intent);
             }
         });

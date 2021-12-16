@@ -40,4 +40,5 @@
     <string name="error_registration">Erreur lors de la modification</string>
     <string name="like">"J\'aime"</string>
     <string name="subscriptions">Abonnements</string>
+    <string name="person_see_story">Personne(s) ayant vu votre story</string>
 </resources>

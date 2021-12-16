@@ -40,4 +40,5 @@
     <string name="error_registration">Error when editing</string>
     <string name="like">Like</string>
     <string name="subscriptions">Subscriptions</string>
+    <string name="person_see_story">"Person(s) who saw your story "</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -61,7 +62,7 @@ public class FollowersActivity extends AppCompatActivity {
         recyclerView.setAdapter(userAdapter);
 
         idList = new ArrayList<>();
-        switch (title){
+        /*switch (title){
             case "J'aime" :
                 getLikes();
                 break;
@@ -73,7 +74,18 @@ public class FollowersActivity extends AppCompatActivity {
                 break;
             case "Personne(s) ayant vu votre story" :
                 getViews();
+                Log.d("debug", getString(R.string.person_see_story));
+                Log.d("debug", String.valueOf(title));
                 break;
+        }*/
+        if(title.equals(getString(R.string.like))){
+            getLikes();
+        }else if(title.equals(getString(R.string.subscriptions))){
+            getFollowing();
+        }else if(title.equals(getString(R.string.subscriber))){
+            getFollowers();
+        }else if(title.equals(getString(R.string.person_see_story))){
+            getViews();
         }
     }
 
