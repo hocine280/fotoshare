@@ -2,13 +2,18 @@ package com.hocine.fotoshare;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -27,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -68,6 +74,8 @@ public class PostActivity extends AppCompatActivity {
         });
 
         CropImage.activity().setAspectRatio(1,1).start(PostActivity.this);
+
+        //CropImage.startPickImageActivity(PostActivity.this);
     }
     private String getFileExtension(Uri uri){
         ContentResolver contentResolver = getContentResolver();
@@ -135,5 +143,34 @@ public class PostActivity extends AppCompatActivity {
             startActivity(new Intent(PostActivity.this,MainActivity.class));
             finish();
         }
+
+        /*if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri imageUriCamera = CropImage.getPickImageResultUri(this, data);
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUriCamera)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                Log.d("kaka", "permission accepté");
+                CropImage.ActivityResult resultGallery = CropImage.getActivityResult(data);
+                imageUri = resultGallery.getUri();
+                image_added.setImageURI(imageUri);
+                //requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUriCamera);
+            }
+        }
+        else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                CropImage.ActivityResult resultGallery = CropImage.getActivityResult(data);
+                imageUri = resultGallery.getUri();
+                image_added.setImageURI(imageUri);
+            }
+        }*/
     }
+
+
+    //private void startCropImageActivity(Uri imageUriCamera) {
+      //  CropImage.activity(imageUriCamera).setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL).start(this);
+    //}
 }

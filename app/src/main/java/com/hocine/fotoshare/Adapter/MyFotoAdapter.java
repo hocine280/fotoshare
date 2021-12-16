@@ -18,16 +18,33 @@ import com.hocine.fotoshare.R;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class MyFotoAdapter extends RecyclerView.Adapter<MyFotoAdapter.ViewHolder>{
 
+    /**
+     * Déclaration des attributs
+     */
     private Context context;
     public List<Post> mPosts;
 
+    /**
+     * Constructeurs par initialisation
+     * @param context
+     * @param mPosts
+     */
     public MyFotoAdapter(Context context, List<Post> mPosts) {
         this.context = context;
         this.mPosts = mPosts;
     }
 
+    /**
+     * Méthode permettant d'implémenter le fichier xml fotos_item, qui permet d'afficher une photo de profil
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
