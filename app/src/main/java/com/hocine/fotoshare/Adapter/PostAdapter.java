@@ -350,7 +350,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     /**
-     * Permet de supprimer un post
+     * Permet de supprimer les notifications liés au post supprimé
      *
      * @param postid
      * @param userid

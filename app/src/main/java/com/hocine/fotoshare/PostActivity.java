@@ -91,9 +91,8 @@ public class PostActivity extends AppCompatActivity {
         });
 
         // Lancement de l'activité afin de choisir son image et de le redimensionner
-        CropImage.activity().setAspectRatio(1, 1).start(PostActivity.this);
+        CropImage.activity().start(PostActivity.this);
 
-        //CropImage.startPickImageActivity(PostActivity.this);
     }
 
     /**
@@ -170,6 +169,7 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             imageUri = result.getUri();
@@ -179,34 +179,5 @@ public class PostActivity extends AppCompatActivity {
             startActivity(new Intent(PostActivity.this, MainActivity.class));
             finish();
         }
-
-        /*if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
-            Uri imageUriCamera = CropImage.getPickImageResultUri(this, data);
-            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUriCamera)) {
-                // request permissions and handle the result in onRequestPermissionsResult()
-                Log.d("kaka", "permission accepté");
-                CropImage.ActivityResult resultGallery = CropImage.getActivityResult(data);
-                imageUri = resultGallery.getUri();
-                image_added.setImageURI(imageUri);
-                //requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
-            } else {
-                // no permissions required or already grunted, can start crop image activity
-                startCropImageActivity(imageUriCamera);
-            }
-        }
-        else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                CropImage.ActivityResult resultGallery = CropImage.getActivityResult(data);
-                imageUri = resultGallery.getUri();
-                image_added.setImageURI(imageUri);
-            }
-        }*/
     }
-
-
-    //private void startCropImageActivity(Uri imageUriCamera) {
-    //  CropImage.activity(imageUriCamera).setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL).start(this);
-    //}
 }
