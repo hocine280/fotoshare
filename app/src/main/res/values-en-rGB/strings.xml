@@ -67,4 +67,5 @@
     <string name="have_account">Already have an account? Please log in!</string>
     <string name="slogan">Share your best moments on FotoShare!</string>
     <string name="search">Search</string>
+    <string name="password_confirm">Confirm your password</string>
 </resources>

@@ -82,6 +82,18 @@
                 android:inputType="textPassword"
                 android:padding="10dp"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_border_bottom"
+                android:textColorHint="@color/vert"
+                android:textColor="@color/bleu"
+                android:hint="@string/password_confirm"
+                android:layout_marginTop="15dp"
+                android:id="@+id/password_confirm"
+                android:inputType="textPassword"
+                android:padding="10dp"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

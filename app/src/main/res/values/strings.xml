@@ -67,4 +67,6 @@
     <string name="register">"S\'inscrire"</string>
     <string name="slogan">Partagez vos plus beaux moments sur FotoShare !</string>
     <string name="search">Recherche ...</string>
+    <string name="password_confirm">Confirmer votre mot de passe</string>
+    <string name="password_confirm_msg">Les mots de passe que vous avez saisis ne sont pas identiques</string>
 </resources>

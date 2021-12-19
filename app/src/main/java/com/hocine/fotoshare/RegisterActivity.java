@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     /**
      * Variables
      */
-    EditText prenom, nom, email, password;
+    EditText prenom, nom, email, password, password_confirm;
     Button register;
     TextView txt_login;
     FirebaseAuth auth;
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         nom = findViewById(R.id.nom);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        password_confirm = findViewById(R.id.password_confirm);
         register = findViewById(R.id.register);
         txt_login = findViewById(R.id.txt_login);
 
@@ -76,12 +78,15 @@ public class RegisterActivity extends AppCompatActivity {
                 String str_nom = nom.getText().toString();
                 String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
+                String str_password_confirm = password_confirm.getText().toString();
 
                 if (TextUtils.isEmpty(str_prenom) || TextUtils.isEmpty(str_nom) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_prenom)) {
                     Toast.makeText(RegisterActivity.this, getString(R.string.filled_field), Toast.LENGTH_SHORT).show();
                 } else if (str_password.length() < 6) {
                     Toast.makeText(RegisterActivity.this, getString(R.string.password), Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(!(str_password.equals(str_password_confirm))){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.password_confirm_msg), Toast.LENGTH_SHORT).show();
+                }else {
                     pd.show();
                     register(str_prenom, str_nom, str_email, str_password);
                 }
