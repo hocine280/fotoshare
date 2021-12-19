@@ -36,8 +36,18 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
+/**
+ * Classe permettant d'ajouter une publication (post)
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class PostActivity extends AppCompatActivity {
 
+    /**
+     * Variables
+     *
+     */
     Uri imageUri;
     String myUrl = "";
     StorageTask uploadTask;
@@ -46,6 +56,11 @@ public class PostActivity extends AppCompatActivity {
     TextView post;
     EditText description;
 
+    /**
+     * Méthode permettant de créer l'activité et de gérer l'upload de la photo
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +73,7 @@ public class PostActivity extends AppCompatActivity {
 
         storageReference = FirebaseStorage.getInstance().getReference("posts");
 
+        // Bouton permettant de fermer l'activité et de revenir à l'acceuil
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +82,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        // Permet de publier son post
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,27 +90,39 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        CropImage.activity().setAspectRatio(1,1).start(PostActivity.this);
+        // Lancement de l'activité afin de choisir son image et de le redimensionner
+        CropImage.activity().setAspectRatio(1, 1).start(PostActivity.this);
 
         //CropImage.startPickImageActivity(PostActivity.this);
     }
-    private String getFileExtension(Uri uri){
+
+    /**
+     * Méthode permettant de récuperer l'extension du fichier selectionné
+     *
+     * @param uri
+     * @return
+     */
+    private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(){
+    /**
+     * Méthode permettant de publier un post
+     *
+     */
+    private void uploadImage() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.post_published));
         progressDialog.show();
-        if(imageUri != null){
+        if (imageUri != null) {
             final StorageReference filereference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
             uploadTask = filereference.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
-                    if(!task.isSuccessful()){
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
                     return filereference.getDownloadUrl();
@@ -101,46 +130,53 @@ public class PostActivity extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                   if(task.isSuccessful()){
-                       Uri downloadUri = task.getResult();
-                       myUrl = downloadUri.toString();
-                       DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-                       String postid = reference.push().getKey();
-                       HashMap<String, Object> hashMap = new HashMap<>();
-                       hashMap.put("postid", postid);
-                       hashMap.put("postimage", myUrl);
-                       hashMap.put("description", description.getText().toString());
-                       hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                       reference.child(postid).setValue(hashMap);
-                       progressDialog.dismiss();
-                       startActivity(new Intent(PostActivity.this, MainActivity.class));
-                       finish();
-                       Toast.makeText(PostActivity.this, getString(R.string.post_created), Toast.LENGTH_SHORT).show();
-                   }else{
-                       Toast.makeText(PostActivity.this, getString(R.string.post_failed), Toast.LENGTH_SHORT).show();
-                   }
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        myUrl = downloadUri.toString();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+                        String postid = reference.push().getKey();
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("postid", postid);
+                        hashMap.put("postimage", myUrl);
+                        hashMap.put("description", description.getText().toString());
+                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        reference.child(postid).setValue(hashMap);
+                        progressDialog.dismiss();
+                        startActivity(new Intent(PostActivity.this, MainActivity.class));
+                        finish();
+                        Toast.makeText(PostActivity.this, getString(R.string.post_created), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PostActivity.this, getString(R.string.post_failed), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(PostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }else{
+        } else {
             Toast.makeText(this, getString(R.string.image), Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Méthode permettant d'enregistrer le post
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             imageUri = result.getUri();
             image_added.setImageURI(imageUri);
-        }else{
+        } else {
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(PostActivity.this,MainActivity.class));
+            startActivity(new Intent(PostActivity.this, MainActivity.class));
             finish();
         }
 
@@ -171,6 +207,6 @@ public class PostActivity extends AppCompatActivity {
 
 
     //private void startCropImageActivity(Uri imageUriCamera) {
-      //  CropImage.activity(imageUriCamera).setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL).start(this);
+    //  CropImage.activity(imageUriCamera).setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL).start(this);
     //}
 }

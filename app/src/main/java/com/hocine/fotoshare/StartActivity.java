@@ -11,24 +11,40 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Classe permettant la gestion de l'activité d'accueil lors du lancement de l'application
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class StartActivity extends AppCompatActivity {
 
+    /**
+     * Variables
+     */
     Button login, register;
-
     FirebaseUser firebaseUser;
 
+    /**
+     * Méthode permettant de rediriger l'utilisateur si ce dernier est déjà crée
+     */
     @Override
     protected void onStart() {
         super.onStart();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Redirection de l'utilisateur si user != null
-        if(firebaseUser != null){
+        if (firebaseUser != null) {
             startActivity(new Intent(StartActivity.this, MainActivity.class));
             finish();
         }
     }
 
+    /**
+     * Méthode permettant la création de l'activité
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

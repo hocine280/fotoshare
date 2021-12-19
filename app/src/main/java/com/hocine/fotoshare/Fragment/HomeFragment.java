@@ -1,8 +1,5 @@
 package com.hocine.fotoshare.Fragment;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,29 +20,43 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hocine.fotoshare.Adapter.PostAdapter;
 import com.hocine.fotoshare.Adapter.StoryAdapter;
-import com.hocine.fotoshare.AlarmReceiver;
-import com.hocine.fotoshare.MainActivity;
 import com.hocine.fotoshare.Model.Post;
 import com.hocine.fotoshare.Model.Story;
 import com.hocine.fotoshare.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Classe permettant la gestion du fragment ou se trouve toutes les publications des personnes que l'on suit
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class HomeFragment extends Fragment {
 
+    /**
+     * Attribut de la classe
+     */
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postLists;
-
     private RecyclerView recyclerView_story;
     private StoryAdapter storyAdapter;
     private List<Story> storyList;
-
     private List<String> followingList;
+
+    // Boucle de chargement
     ProgressBar progressBar;
 
+    /**
+     * Permet de définir quel fichier xml nous utilisons dans ce fragment et nous récupérons nous les différents de ce fichier xml
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,15 +80,15 @@ public class HomeFragment extends Fragment {
         storyList = new ArrayList<>();
         storyAdapter = new StoryAdapter(getContext(), storyList);
         recyclerView_story.setAdapter(storyAdapter);
-
-
         progressBar = view.findViewById(R.id.progress_circular);
-
 
         checkFollowing();
         return view;
     }
 
+    /**
+     * Méthode permettant de vérifier les personnes que l'on suit
+     */
     private void checkFollowing() {
         followingList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -101,6 +111,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer les posts que l'on va afficher
+     */
     private void readPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
 
@@ -110,10 +123,7 @@ public class HomeFragment extends Fragment {
                 postLists.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    Log.d("tag", String.valueOf(post));
                     for (String id : followingList) {
-                        Log.d("tag", "id : " + id);
-                        Log.d("tag", "publisher : " + post.getPublisher());
                         if (post.getPublisher().equals(id)) {
                             postLists.add(post);
                         }
@@ -130,6 +140,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer les story a affiché
+     */
     private void readStory() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story");
         reference.addValueEventListener(new ValueEventListener() {

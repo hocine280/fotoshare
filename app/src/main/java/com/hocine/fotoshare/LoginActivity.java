@@ -23,14 +23,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Classe gérant la connexion de l'utilisateur
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     * Variables
+     */
     EditText email, password;
     Button login;
     TextView txt_register;
-
     FirebaseAuth auth;
 
+    /**
+     * Méthode permettant le lancement de l'activité pour se connecter + gestion de la connexion
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,27 +63,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Gestion de la connexion, vérifie si les données saisies correspondent à un compte FotoShare
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ProgressDialog pd = new ProgressDialog(LoginActivity.this);
                 pd.setMessage(getString(R.string.wait));
-
-
                 String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
-
-                if(TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
+                if (TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)) {
                     Toast.makeText(LoginActivity.this, getString(R.string.filled_field), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     pd.show();
                     auth.signInWithEmailAndPassword(str_email, str_password)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                                                .child(auth.getCurrentUser().getUid());
+                                    if (task.isSuccessful()) {
+                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid());
                                         reference.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -86,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 pd.dismiss();
                                             }
                                         });
-                                    }else{
+                                    } else {
                                         pd.dismiss();
                                         Toast.makeText(LoginActivity.this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show();
                                     }

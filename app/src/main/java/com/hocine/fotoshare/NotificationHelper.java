@@ -13,20 +13,40 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 
+import com.hocine.fotoshare.MainActivity;
+import com.hocine.fotoshare.R;
 
-public class NotificationHelper extends ContextWrapper{
+/**
+ * Classe permettant la gestion des notifications
+ *
+ * @author Hocine
+ * @version 1.0
+ */
+public class NotificationHelper extends ContextWrapper {
     private NotificationManager notifManager;
 
+    /**
+     * Identifiant du channel de notification
+     */
     private static final String CHANNEL_DEFAULT_ID = "DEFAULT_CHANNEL";
+
+    /**
+     * Le nom du channel de notification
+     */
     private static final String CHANNEL_DEFAULT_NAME = "Notifications";
 
 
-    public NotificationHelper( Context base ) {
-        super( base );
+    /**
+     * Constructeur de la classe permerttant de créer un channel de notification
+     *
+     * @param base
+     */
+    public NotificationHelper(Context base) {
+        super(base);
 
         notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        long [] swPattern = new long[] { 0, 500, 110, 500, 110, 450, 110, 200, 110,
-                170, 40, 450, 110, 200, 110, 170, 40, 500 };
+        long[] swPattern = new long[]{0, 500, 110, 500, 110, 450, 110, 200, 110,
+                170, 40, 450, 110, 200, 110, 170, 40, 500};
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannelDefault = new NotificationChannel(
@@ -38,8 +58,14 @@ public class NotificationHelper extends ContextWrapper{
         }
     }
 
-
-    public void notify(int id, String title, String message ) {
+    /**
+     * Méthode permettant d'envoyer une notification
+     *
+     * @param id
+     * @param title
+     * @param message
+     */
+    public void notify(int id, String title, String message) {
         Resources res = getApplicationContext().getResources();
 
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -47,7 +73,7 @@ public class NotificationHelper extends ContextWrapper{
         title.toUpperCase();
         Notification notification = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            notification = new Notification.Builder( getApplicationContext(), CHANNEL_DEFAULT_ID )
+            notification = new Notification.Builder(getApplicationContext(), CHANNEL_DEFAULT_ID)
                     .setContentIntent(contentIntent)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -57,7 +83,6 @@ public class NotificationHelper extends ContextWrapper{
                     .setColor(Color.parseColor("#D3D3D3"))
                     .build();
         }
-
-        notifManager.notify( id, notification );
+        notifManager.notify(id, notification);
     }
 }

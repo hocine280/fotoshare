@@ -39,6 +39,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
+/**
+ * Classe permettant la gestion de l'activité qui permet de modifier son profil
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class EditProfileActivity extends AppCompatActivity {
 
     ImageView close, image_profile;
@@ -50,7 +56,12 @@ public class EditProfileActivity extends AppCompatActivity {
     StorageReference storageRef;
 
 
-
+    /**
+     * Méthode permettant la création de l'activité + récupération des éléments de la vue
+     * + gestion d'un bundle lors du retournement de l'écran qui conserve les données saisies
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +88,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 bio.setText(user.getBio());
                 Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
 
-                if(savedInstanceState != null){
-                    if(savedInstanceState.get("prenom") != null){
+                if (savedInstanceState != null) {
+                    if (savedInstanceState.get("prenom") != null) {
                         nom.setText(savedInstanceState.getString("nom"));
                         prenom.setText(savedInstanceState.getString("prenom"));
                         bio.setText(savedInstanceState.getString("bio"));
@@ -91,14 +102,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
-
+        // ferme l'activité
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
+        // changer sa photo de profil
         tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +133,11 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Méthode permettant la mise en place du bundle
+     *
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -130,17 +146,29 @@ public class EditProfileActivity extends AppCompatActivity {
         outState.putString("bio", bio.getText().toString());
     }
 
+    /**
+     * Méthode permettant la mise en place du bundle
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             nom.setText(savedInstanceState.getString("nom"));
             prenom.setText(savedInstanceState.getString("prenom"));
             bio.setText(savedInstanceState.getString("bio"));
         }
     }
 
+    /**
+     * Méthode permettant la mise à jour du profile
+     *
+     * @param nom
+     * @param prenom
+     * @param bio
+     */
     private void updateProfile(String nom, String prenom, String bio) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
@@ -152,25 +180,34 @@ public class EditProfileActivity extends AppCompatActivity {
         reference.updateChildren(hashMap);
     }
 
-    private String getFileExtension(Uri uri){
+    /**
+     * Méthode permettant de récupérer l'extension du fichier
+     *
+     * @param uri
+     * @return
+     */
+    private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(){
+    /**
+     * Méthode permettant de modifier sa photo de profil
+     */
+    private void uploadImage() {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.save_in_progress));
         progressDialog.show();
 
-        if(mImageUri != null){
-            StorageReference filereference = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
+        if (mImageUri != null) {
+            StorageReference filereference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
 
             uploadTask = filereference.putFile(mImageUri);
             uploadTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
-                    if(!task.isSuccessful()){
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
                     return filereference.getDownloadUrl();
@@ -178,15 +215,15 @@ public class EditProfileActivity extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         String myUrl = downloadUri.toString();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
                         HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("imageurl", ""+myUrl);
+                        hashMap.put("imageurl", "" + myUrl);
                         reference.updateChildren(hashMap);
                         progressDialog.dismiss();
-                    }else{
+                    } else {
                         Toast.makeText(EditProfileActivity.this, getString(R.string.error_registration), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -196,20 +233,27 @@ public class EditProfileActivity extends AppCompatActivity {
                     Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }else{
+        } else {
             Toast.makeText(this, getString(R.string.image), Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Méthode permettant d'enregistrer la nouvelle photo de profil, méthode appelée suite à l'instruction 110
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             mImageUri = result.getUri();
             uploadImage();
-        }else{
+        } else {
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
         }
     }

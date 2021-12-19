@@ -27,16 +27,38 @@ import com.hocine.fotoshare.R;
 
 import java.util.List;
 
+/**
+ * Classe permettant la gestion de la partie Notification
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
+    /**
+     * Attribut de la classe NotificationAdapter
+     */
     private Context mContext;
     private List<Notification> mNotification;
 
+    /**
+     * Constructeur par initialisation
+     *
+     * @param mContext
+     * @param mNotification
+     */
     public NotificationAdapter(Context mContext, List<Notification> mNotification) {
         this.mContext = mContext;
         this.mNotification = mNotification;
     }
 
+    /**
+     * Méthode permettant d'implémenter le fichier xml notifications_item.xml
+     *
+     * @param viewGroup
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -44,45 +66,65 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return new NotificationAdapter.ViewHolder(view);
     }
 
+    /**
+     * Méthode permettant d'afficher les notification si cette dernière a été postée
+     *
+     * @param viewHolder
+     * @param i
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Notification notification = mNotification.get(i);
         viewHolder.text.setText(notification.getText());
         getUserInfo(viewHolder.image_profile, viewHolder.prenom, notification.getUserid());
-        if(notification.isIspost()){
+        // Vérifie si la notification a été postée
+        if (notification.isIspost()) {
             viewHolder.post_image.setVisibility(View.VISIBLE);
             getPostImage(viewHolder.post_image, notification.getPostid());
-        }else{
+        } else {
             viewHolder.post_image.setVisibility(View.GONE);
         }
+        // Mise en place d'un sharedPreferences
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(notification.isIspost()){
+                if (notification.isIspost()) {
                     SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
                     editor.putString("postid", notification.getPostid());
                     editor.apply();
-                    ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
-                }else{
+                    ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
+                } else {
                     SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
                     editor.putString("profileid", notification.getUserid());
                     editor.apply();
-                    ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                    ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 }
             }
         });
     }
 
+    /**
+     * Méthode permettant de récuperer le nombre de notification total
+     * Retourne le nombre d'élements de la liste mNotification
+     *
+     * @return
+     */
     @Override
     public int getItemCount() {
         return mNotification.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile, post_image;
         public TextView prenom, text;
 
+        /**
+         * Récupère les éléments du fichier xml notification_item.xml
+         *
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -93,7 +135,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
     }
 
-    private void getUserInfo(final ImageView imageView, final TextView prenom, String publisherid){
+    /**
+     * Méthode permettant de récuperer les infos de l'utilisateur
+     *
+     * @param imageView
+     * @param prenom
+     * @param publisherid
+     */
+    private void getUserInfo(final ImageView imageView, final TextView prenom, String publisherid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(publisherid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -110,7 +159,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         });
     }
 
-    private void getPostImage(ImageView imageView, String postid){
+    /**
+     * Méthode  permettant de récuperer l'image qui a été commenté ou liké
+     *
+     * @param imageView
+     * @param postid
+     */
+    private void getPostImage(ImageView imageView, String postid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

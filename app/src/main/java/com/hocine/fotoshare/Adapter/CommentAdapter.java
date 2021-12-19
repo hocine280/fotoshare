@@ -41,6 +41,9 @@ import java.util.List;
 
 /**
  * Class CommentAdapter permettant de faire la liaison entre la vue des commentaires et les données, ici les commentaires
+ *
+ * @author Hocine
+ * @version 1.0
  */
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
@@ -158,6 +161,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     /**
      * Permet de récuperer le nombre total de commentaire que le post selectionné possède
+     * Retourne le nombre d'élements de la list mComment
+     *
      * @return int
      */
     @Override
@@ -185,6 +190,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     /**
      * Méthode permettant de récuper les informations du profil de l'utilisateur ayant poster le commentaire
+     *
      * @param imageView
      * @param prenom
      * @param publisherid

@@ -49,14 +49,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classe permettant la gestion du fragment correspondant au profil
+ * @author Hocine
+ * @version 1.0
+ */
 public class ProfileFragment extends Fragment {
 
+    /**
+     * Variables
+     */
     ImageView image_profile, options;
     TextView posts, followers, following, nom, bio, prenom;
     Button edit_profile;
 
+    /**
+     * Attribut de la classe
+     */
     private List<String> mySaves;
 
+    /**
+     * Variables
+     */
     RecyclerView recyclerView_saves;
     MyFotoAdapter myFotoAdapter_saves;
     List<Post> postList_saves;
@@ -67,9 +81,15 @@ public class ProfileFragment extends Fragment {
 
     FirebaseUser firebaseUser;
     String profileid;
-
     ImageButton my_fotos, saved_fotos;
 
+    /**
+     * Méthode permettant de définir quel fichier xml nous allons utiliser dans ce fragment + recupération des elements de ce dernier + action effectué lors des appuis sur les bouton
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -107,7 +127,6 @@ public class ProfileFragment extends Fragment {
 
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView_saves.setVisibility(View.GONE);
-
 
         userInfo();
         getFollowers();
@@ -187,6 +206,9 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Méthode permettant d'afficher qu'une personne a commencé à vous suivre dans fragment_notification
+     */
     private void addNotifications(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -196,6 +218,9 @@ public class ProfileFragment extends Fragment {
         hashMap.put("ispost", false);
     }
 
+    /**
+     * Permet de récuperer les informations de l'utilisateur (nom, prenom, bio ..)
+     */
     private void userInfo(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(profileid);
         reference.addValueEventListener(new ValueEventListener() {
@@ -218,6 +243,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode de gérer l'état du bouton pour s'abonner ou se désabonner d'une personne
+     */
     private void checkFollow(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following");
         reference.addValueEventListener(new ValueEventListener() {
@@ -237,6 +265,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer le nombre d'abonnés et d'abonnement d'un utilisateur
+     */
     private void getFollowers(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid).child("followers");
         reference.addValueEventListener(new ValueEventListener() {
@@ -265,6 +296,10 @@ public class ProfileFragment extends Fragment {
         });
 
     }
+
+    /**
+     * Méthode permettant de récuperer le nombre de posts de l'utilisateur
+     */
     private void getNrPosts(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
         reference.addValueEventListener(new ValueEventListener() {
@@ -287,6 +322,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthodes permettant de récuperer les posts d'un utilisateur
+     */
     private void myFotos(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
         reference.addValueEventListener(new ValueEventListener() {
@@ -310,6 +348,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer les élements sauvegardés
+     */
     private void mySaves(){
         mySaves = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Saves").child(firebaseUser.getUid());
@@ -329,6 +370,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Méthode permettant d'afficher les elements sauvegardés
+     */
     private void readSaves(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
         reference.addValueEventListener(new ValueEventListener() {

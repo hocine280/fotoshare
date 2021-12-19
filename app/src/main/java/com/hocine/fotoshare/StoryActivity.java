@@ -30,8 +30,16 @@ import java.util.List;
 
 import jp.shts.android.storiesprogressview.StoriesProgressView;
 
+/**
+ * Classe permettant la gestion des Story
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class StoryActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
-
+    /**
+     * Variables
+     */
     int counter = 0;
     long pressTime = 0L;
     long limit = 500L;
@@ -44,7 +52,6 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     TextView seen_number;
     ImageView story_delete;
 
-
     List<String> images;
     List<String> storyids;
     String userid;
@@ -52,7 +59,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()){
+            switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     pressTime = System.currentTimeMillis();
                     storiesProgressView.pause();
@@ -67,6 +74,11 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     };
 
 
+    /**
+     * Méthode permettant la création de l'activité + gestion des différentes fonctionnalités de l'activtié
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,15 +98,15 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
         userid = getIntent().getStringExtra("userid");
 
-        if(userid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        if (userid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             r_seen.setVisibility(View.VISIBLE);
             story_delete.setVisibility(View.VISIBLE);
-
         }
 
         getStories(userid);
         userInfo(userid);
 
+        // Story précedente
         View reverse = findViewById(R.id.reverse);
         reverse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +117,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         });
         reverse.setOnTouchListener(onTouchListener);
 
+        // Story suivante
         View skip = findViewById(R.id.skip);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +127,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         });
         skip.setOnTouchListener(onTouchListener);
 
+        // Personne ayant vu notre story
         r_seen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +139,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
             }
         });
 
+        // Supprimer une story
         story_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +147,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(StoryActivity.this, getString(R.string.story_delete), Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -142,6 +157,9 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         });
     }
 
+    /**
+     * Méthode permettant de passer automatiquement à la story suivante
+     */
     @Override
     public void onNext() {
         Glide.with(getApplicationContext()).load(images.get(++counter)).into(image);
@@ -149,37 +167,57 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         seenNumber(storyids.get(counter));
     }
 
+    /**
+     * Méthode permettant de passer automatiquement à la story précédente
+     */
     @Override
     public void onPrev() {
-        if((counter - 1) < 0) return;
+        if ((counter - 1) < 0) return;
         Glide.with(getApplicationContext()).load(images.get(--counter)).into(image);
         seenNumber(storyids.get(counter));
     }
 
+    /**
+     * Une fois les story fini, l'activité s'arrête
+     */
     @Override
     public void onComplete() {
         finish();
     }
 
+    /**
+     * Méthode permettant de détruire toutes les ressources
+     */
     @Override
     protected void onDestroy() {
         storiesProgressView.destroy();
         super.onDestroy();
     }
 
+    /**
+     * Méthode permettant de mettre en pause la story
+     */
     @Override
     protected void onPause() {
         storiesProgressView.pause();
         super.onPause();
     }
 
+    /**
+     * Méthode permettant de mettre en pause la story
+     */
     @Override
     protected void onResume() {
         storiesProgressView.resume();
         super.onResume();
     }
 
-    private void getStories(String userid){
+    /**
+     * Méthode permettant de récuperer les stories
+     *
+     * @param userid
+     */
+    private void getStories(String userid) {
         images = new ArrayList<>();
         storyids = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story").child(userid);
@@ -188,10 +226,10 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 images.clear();
                 storyids.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Story story = snapshot.getValue(Story.class);
                     long timecurrent = System.currentTimeMillis();
-                    if(timecurrent > story.getTimestart() && timecurrent < story.getTimeend()){
+                    if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()) {
                         images.add(story.getImageurl());
                         storyids.add(story.getStoryid());
                     }
@@ -215,7 +253,12 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         });
     }
 
-    private void userInfo(String userid){
+    /**
+     * Méthode permettant de récuperer les informations de l'utilisateur
+     *
+     * @param userid
+     */
+    private void userInfo(String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -233,19 +276,29 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
     }
 
-    private void addView(String storyid){
+    /**
+     * Méthode permettant d'ajouter les personnes qui ont vu la story en base de données
+     *
+     * @param storyid
+     */
+    private void addView(String storyid) {
         FirebaseDatabase.getInstance().getReference("Story").child(userid).child(storyid).child("views")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(true);
     }
 
-    private void seenNumber(String storyid){
+    /**
+     * Méthode permettant de récuperer le nombre de personnes ayant vu la story
+     *
+     * @param storyid
+     */
+    private void seenNumber(String storyid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
                 .child(userid).child(storyid).child("views");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                seen_number.setText(""+dataSnapshot.getChildrenCount());
+                seen_number.setText("" + dataSnapshot.getChildrenCount());
             }
 
             @Override

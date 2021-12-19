@@ -25,16 +25,30 @@ import com.hocine.fotoshare.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Classe permettant la gestion du fragment qui affiche le détail d'un post
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class PostDetailFragment extends Fragment {
 
     String postid;
+    /**
+     * Attribut de la classe
+     */
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
 
-
-
+    /**
+     * Méthode permettant de définir quel fichier xml nous allons utiliser dans ce fragment + recupration des elements de ce dernier
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,12 +66,14 @@ public class PostDetailFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         recyclerView.setAdapter(postAdapter);
-
         readPosts();
 
         return view;
     }
 
+    /**
+     * Méthode permettant de récuperer le post selectionné
+     */
     private void readPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postid);
         reference.addValueEventListener(new ValueEventListener() {

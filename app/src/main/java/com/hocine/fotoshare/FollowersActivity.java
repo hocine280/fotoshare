@@ -22,17 +22,29 @@ import com.hocine.fotoshare.Model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe permettant d'afficher les personnes qui nous suivent, que nous suivons, qui ont aimé un post ou vu une story
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class FollowersActivity extends AppCompatActivity {
 
+    /**
+     * Variables
+     */
     String id;
     String title;
-
     List<String> idList;
-
     RecyclerView recyclerView;
     UserAdapter userAdapter;
     List<User> userList;
 
+    /**
+     * Méthode permettant la création de l'activité + appel de la fonction correspondant à ce que l'on veut afficher
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,25 +75,28 @@ public class FollowersActivity extends AppCompatActivity {
 
         idList = new ArrayList<>();
 
-        if(title.equals(getString(R.string.like))){
+        if (title.equals(getString(R.string.like))) {
             getLikes();
-        }else if(title.equals(getString(R.string.subscriptions))){
+        } else if (title.equals(getString(R.string.subscriptions))) {
             getFollowing();
-        }else if(title.equals(getString(R.string.subscriber))){
+        } else if (title.equals(getString(R.string.subscriber))) {
             getFollowers();
-        }else if(title.equals(getString(R.string.person_see_story))){
+        } else if (title.equals(getString(R.string.person_see_story))) {
             getViews();
         }
     }
 
-    private void getViews(){
+    /**
+     * Méthode permettant de récuperer la liste des personnes ayant vu une story
+     */
+    private void getViews() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
                 .child(id).child(getIntent().getStringExtra("storyid")).child("views");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     idList.add(snapshot.getKey());
                 }
                 showUsers();
@@ -94,13 +109,16 @@ public class FollowersActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer la liste des personnes ayant liké un post
+     */
     private void getLikes() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Likes").child(id);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     idList.add(snapshot.getKey());
                 }
                 showUsers();
@@ -113,13 +131,16 @@ public class FollowersActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Méthode permettant de récuperer les abonnements d'une utilisateur
+     */
     private void getFollowing() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow").child(id).child("following");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     idList.add(snapshot.getKey());
                 }
                 showUsers();
@@ -132,14 +153,17 @@ public class FollowersActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Méthode permettant de récupérer les abonnés d'un utilisateur
+     */
     private void getFollowers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow").child(id).child("followers");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    idList.add(snapshot.getKey()); 
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    idList.add(snapshot.getKey());
                 }
                 showUsers();
             }
@@ -151,16 +175,19 @@ public class FollowersActivity extends AppCompatActivity {
         });
     }
 
-    private void showUsers(){
+    /**
+     * Méthode permettant d'afficher le profil d'un utilisateur lorsque l'on clic sur celui-ci
+     */
+    private void showUsers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
-                    for(String id : idList){
-                        if(user.getId().equals(id)){
+                    for (String id : idList) {
+                        if (user.getId().equals(id)) {
                             userList.add(user);
                         }
                     }

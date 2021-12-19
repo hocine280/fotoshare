@@ -24,16 +24,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * Classe permettant d'enregistrer un nouvelle utilisateur FotoShare
+ *
+ * @author Hocine
+ * @version 1.0
+ */
 public class RegisterActivity extends AppCompatActivity {
 
+    /**
+     * Variables
+     */
     EditText prenom, nom, email, password;
     Button register;
     TextView txt_login;
-
     FirebaseAuth auth;
     DatabaseReference reference;
     ProgressDialog pd;
 
+    /**
+     * Méthode permettant la création de l'activité + vérifie si les champs sont remplis et que le mot de mot de passe contient au moins 6 caractères
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,30 +72,37 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pd = new ProgressDialog(RegisterActivity.this);
                 pd.setMessage(getString(R.string.wait));
-
-
-                String str_prenom= prenom.getText().toString();
-                String str_nom= nom.getText().toString();
+                String str_prenom = prenom.getText().toString();
+                String str_nom = nom.getText().toString();
                 String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
 
-                if(TextUtils.isEmpty(str_prenom) || TextUtils.isEmpty(str_nom) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_prenom)){
+                if (TextUtils.isEmpty(str_prenom) || TextUtils.isEmpty(str_nom) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_prenom)) {
                     Toast.makeText(RegisterActivity.this, getString(R.string.filled_field), Toast.LENGTH_SHORT).show();
-                }else if(str_password.length()<6){
+                } else if (str_password.length() < 6) {
                     Toast.makeText(RegisterActivity.this, getString(R.string.password), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     pd.show();
                     register(str_prenom, str_nom, str_email, str_password);
                 }
             }
         });
     }
-    private void register(String prenom, String nom, String email, String password){
-        auth.createUserWithEmailAndPassword(email,password)
+
+    /**
+     * Méthode permettant l'enregistrement en base de données du nouvel utilisateur
+     *
+     * @param prenom
+     * @param nom
+     * @param email
+     * @param password
+     */
+    private void register(String prenom, String nom, String email, String password) {
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = auth.getCurrentUser();
                             String userId = firebaseUser.getUid();
                             reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
@@ -95,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
+                                    if (task.isSuccessful()) {
                                         pd.dismiss();
                                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -103,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                        }else{
+                        } else {
                             pd.dismiss();
                             Toast.makeText(RegisterActivity.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();
                         }
