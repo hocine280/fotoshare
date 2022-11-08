@@ -40,4 +40,6 @@ Fotoshare est doté d'une multitude de fonctionnalités tel que :
 - Supprimer un like 
 - Rechercher quelqu'un par son pseudo
 
-*** Projet réalisé par Hocine (@hocine280) ***
+<hr>
+
+<b>Projet réalisé par Hocine (@hocine280)</b>
