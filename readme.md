@@ -1,4 +1,4 @@
-# **![alt text](logoWithText.png)**
+# <p align="center"><img src="logoWithText.png"/></p>
 
 1. [Qu'est-ce que Fotoshare ? ](#chapter-1)
 2. [Technologies utilisées](#chapter-2)
